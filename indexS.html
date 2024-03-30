@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styleS.css" />
+    <title>ToDo List by Shaman</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="toDo_container">
+        <h1>ToDo List by Shaman</h1>
+        <input
+          type="text"
+          class="inputTitle"
+          placeholder="Please enter Title!..."
+          required
+        />
+        <input
+          type="text"
+          class="inputTask"
+          placeholder="Please enter Task!..."
+          required
+        />
+        <button type="submit" class="btn">Add your task!</button>
+        <button type="submit" class="btnSortByTime">Sort by Time</button>
+        <button type="submit" class="btnSortByTitle">Sort by Name</button>
+        <div class="list-container">
+          <ul class="list"></ul>
+        </div>
+      </div>
+    </div>
+    <script src="./scriptS.js"></script>
+  </body>
+</html>
