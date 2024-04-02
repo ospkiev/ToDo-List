@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const taskList = document.querySelector(".list");
   let ascendingOrderTime = false; // Змінна для збереження напряму сортування за часом
   let ascendingOrderName = true; // Змінна для збереження напряму сортування за назвою
+  let asc = true
 
   // Функція для додавання нової задачі
   function addTask() {
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (taskText !== '' && titleText !== '') {
       const taskItem = document.createElement('li');
       const dateCreated = new Date().toLocaleString();
-      taskItem.innerHTML = `<strong>${titleText}:</strong> ${taskText} <span class="date">${dateCreated}</span> 
+      taskItem.innerHTML = `<strong>${titleText}:</strong> <p>${taskText}</p> <span class="date">${dateCreated}</span> 
                            <button class="edit_btn">Edit</button>
                            <button class="delete_btn">Delete</button>`;
       taskItem.setAttribute('data-createdAt', Date.now()); // Додаємо атрибут з поточним часом
@@ -28,18 +29,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Функція для редагування задачі
   function editTask(taskItem) {
-    const titleElement = taskItem.querySelector('strong');
-    const title = titleElement.textContent;
-    const task = taskItem.querySelector('span').textContent;
-    const newTitle = prompt('Enter new title:', title);
+    console.log('taskItem', taskItem)
+    const titleElement = taskItem.querySelector('strong').textContent;
+    const task = taskItem.querySelector('p').textContent;
+    const newTitle = prompt('Enter new title:', titleElement);
     const newTask = prompt('Enter new task:', task);
-    if (newTitle !== null && newTask !== null) {
-      titleElement.textContent = newTitle;
-      taskItem.querySelector('span').textContent = newTask;
-      taskItem.querySelector('span.date').textContent = new Date().toLocaleString();
-      taskItem.classList.add('edited');
-      saveTasks();
-    }
+    taskItem.querySelector('strong').textContent = newTitle;
+    taskItem.querySelector('p').textContent = newTask;
+    taskItem.querySelector('span.date').textContent = new Date().toLocaleString();
+    taskItem.classList.add('edited');
+    saveTasks();
   }
 
   // Функція для видалення задачі
@@ -57,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
   addTaskBtn.addEventListener('click', addTask);
   sortByTimeBtn.addEventListener('click', sortByTime);
   sortByNameBtn.addEventListener('click', sortByName);
+
   taskList.addEventListener('click', function (e) {
     if (e.target.classList.contains('delete_btn')) {
       deleteTask(e.target.parentElement);
@@ -77,18 +77,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // Функція для сортування за часом
   function sortByTime() {
     const tasks = Array.from(taskList.children);
-    tasks.sort((a, b) => {
-      const timeA = new Date(a.getAttribute('data-createdAt'));
-      const timeB = new Date(b.getAttribute('data-createdAt'));
-      if (ascendingOrderTime) {
-        return timeA - timeB;
+    const sortedList = tasks.sort((a, b) => {
+      if (asc) {
+        return Number(a.dataset.createdat) - Number(b.dataset.createdat);
       } else {
-        return timeB - timeA;
+        return Number(b.dataset.createdat) - Number(a.dataset.createdat)
       }
     });
-    ascendingOrderTime = !ascendingOrderTime; // Зміна напряму сортування для наступного натискання
-    taskList.innerHTML = '';
-    tasks.forEach(task => taskList.appendChild(task));
+    sortedList.forEach(task => taskList.appendChild(task));
+    asc = !asc
   }
 
   // Функція для сортування за назвою
